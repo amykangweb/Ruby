@@ -9,10 +9,6 @@ class Animal
     Animal.all_animals(self)
   end
 
-  def type
-    nil
-  end
-
   def self.add_to_records(obj)
     puts "Adding #{obj.name} to #{self}s..."
     @all_animal ||= []
