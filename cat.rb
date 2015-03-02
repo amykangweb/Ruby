@@ -1,5 +1,35 @@
 class Animal
 
+  attr_reader :name, :age
+
+  def initialize(args={})
+    @name = args[:name]
+    @age = args[:age]
+    self.class.add_to_records(self)
+    Animal.all_animals(self)
+  end
+
+  def type
+    nil
+  end
+
+  def self.add_to_records(obj)
+    puts "Adding #{obj.name} to #{self}s..."
+    @all_animal ||= []
+    @all_animal << obj
+  end
+
+  def self.return_records
+    puts "Returning all #{self}s..."
+    @all_animal.each do |c|
+      puts c.name
+    end
+  end
+
+  # Methods that belong to Animal only
+
+  protected
+
   def self.all_animals(arg)
     @all ||= []
     @all << arg
@@ -14,37 +44,9 @@ class Animal
 end
 
 class Cat < Animal
-  attr_reader :name, :age
-
-  def initialize(args={})
-    @name = args[:name]
-    @age = args[:age]
-    Cat.add_to_records(self)
-    Animal.all_animals(self)
-  end
-
-  def self.add_to_records(cat)
-    puts "Adding #{self.name} to records..."
-    @all_cats ||= []
-    @all_cats << cat
-  end
-
-  def self.return_records
-    puts "Returning all cats..."
-    @all_cats.each do |c|
-      puts c.name
-    end
-  end
 end
 
 class Dog < Animal
-  attr_reader :name
-
-  def initialize(args={})
-    @name = args[:name]
-    @age = args[:age]
-    Animal.all_animals(self)
-  end
 end
 
 class Breed
@@ -64,7 +66,7 @@ class Breed
 
   def add_animal(obj)
     @all_members << obj
-    puts "Cat added to #{self.breed}"
+    puts "#{obj.name} added to #{self.breed}"
   end
 
   def remove_animal(obj)
@@ -86,6 +88,7 @@ dog1 = Dog.new(name: 'Spot')
 
 Animal.return_animals
 Cat.return_records
+Dog.return_records
 
 breed1.add_animal(cat1)
 breed1.add_animal(cat2)
