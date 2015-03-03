@@ -9,6 +9,8 @@ class Animal
     Animal.all_animals(self)
   end
 
+  # Add and Return members of particular species
+
   def self.add_to_records(obj)
     puts "Adding #{obj.name} to #{self}s..."
     @all_animal ||= []
@@ -23,8 +25,6 @@ class Animal
   end
 
   # Methods that belong to Animal only
-
-  protected
 
   def self.all_animals(arg)
     @all ||= []
@@ -52,6 +52,8 @@ class Breed
     @breed = breed
     @all_members = []
   end
+
+  # Add and Return members of specific Breed"
 
   def return_members
     puts "Returning all members of #{self.class}: #{self.breed}..."
