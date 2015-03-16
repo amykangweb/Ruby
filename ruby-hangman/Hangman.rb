@@ -1,18 +1,15 @@
-# Translating java hangman program into ruby
+# Translate java hangman program into ruby
 
 class Hangman
 
-  def self.prompt_guess(answer)
-    print "Please enter a guess: "
-    guess = gets.chomp
-    guess = guess[0]
+  def self.start_game(answer)
     game = Game.new(answer)
-    result = game.check_answer(guess)
-    Prompter.guess_result(result)
+    prompter = Prompter.new
+    prompter.display_progress(game)
+    result = prompter.prompt_guess(game)
+    Hangman.guess_result(result)
+    prompter.display_progress(game)
   end
-end
-
-class Prompter
 
   def self.guess_result(result)
     if result == true
@@ -20,6 +17,21 @@ class Prompter
     else
       puts "Whoops that's a miss!"
     end
+  end
+end
+
+class Prompter
+
+  def prompt_guess(game)
+    print "Please enter a guess: "
+    guess = gets.chomp
+    guess = guess[0]
+    game.check_answer(guess)
+  end
+
+  def display_progress(game)
+    result = game.current_progress
+    puts "Try to solve: #{result}"
   end
 end
 
@@ -35,13 +47,23 @@ class Game
     is_hit = @answer.index(guess) != nil
     if is_hit
       @hits << guess
-      puts @hits
     else
       @misses << guess
-      puts @misses
     end
     return is_hit
   end
+
+  def current_progress
+    progress = ''
+    @answer.chars.to_a.each do |letter|
+      display = '_'
+      if @hits.index(letter) != nil
+        display = letter
+      end
+      progress += display
+    end
+     return progress
+  end
 end
 
-Hangman.prompt_guess("treehouse")
+Hangman.start_game("treehouse")
